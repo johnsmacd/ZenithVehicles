@@ -1,17 +1,21 @@
 ## Task Overview
 
-You will be working with a Fines Management system that consists of a .NET API backend and a React frontend. Your goal is to implement filtering functionality across both layers.
+You will be working with a Fines Management system that consists of a .NET API backend and a React frontend. Your goal is to implement filtering functionality across both layers. The backend uses an in-memory database with some test data included.
+
+You may use AI tools such as Copilot, however you will be expected to fully understand and explain your changes.
+
+This task is expected to take around 2 hours, however you may take as long as you like.
 
 ### Requirements
 
-1. **Fork and Clone**
+1. **Use Template and Clone**
    - Use this repository template to create a new public repository on your own GitHub account
    - Clone your repository locally to begin working on the task
 
 2. **Implement Changes**
    - Modify the API to return the additional field and support filtering fines
    - Update the front end to display the new column and allow users to filter fines
-   - Carry out any additional improvements or refactoring as you see fit
+   - If you have any time remaining, carry out additional improvements or refactoring as you see fit
 
 3. **Submit Your Work**
    - Check in and push your completed solution to your repository
@@ -78,8 +82,11 @@ Once you've completed the task:
 
 1. Ensure all your changes are committed
 2. Push to your repository
-3. Share a link to your repository with your contact at Zenith
+3. Ensure your repository is public
+4. Share a link to your repository with your contact at Zenith
 
 ## Questions?
 
 If you have any questions about the task requirements or encounter issues with the setup, please reach out to your contact at Zenith for clarification.
+
+There is no penalty for asking questions, so please don't hesitate!
