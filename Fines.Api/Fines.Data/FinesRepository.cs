@@ -16,6 +16,7 @@ public class FinesRepository : IFinesRepository
     {
         return await _context.Fines
             .Include(f => f.Vehicle)
+            .Include(f => f.Customer)
             .ToListAsync();
     }
 }

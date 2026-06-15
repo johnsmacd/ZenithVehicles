@@ -72,7 +72,9 @@ namespace Fines.Tests
                     FineType = FineType.Speeding,
                     VehicleId = 1,
                     Vehicle = vehicle,
-                    VehicleDriverName = "John Doe"
+                    VehicleDriverName = "John Doe",
+                    CustomerId = 100,
+                    Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" }
                 }
             };
             _mockRepository.Setup(repo => repo.GetAllFinesAsync())
@@ -89,6 +91,7 @@ namespace Fines.Tests
             Assert.Equal(FineType.Speeding, fine.FineType);
             Assert.Equal("ABC123", fine.VehicleRegNo);
             Assert.Equal("John Doe", fine.VehicleDriverName);
+            Assert.Equal("john was here", fine.CustomerName);
         }
 
         [Fact]
@@ -112,11 +115,11 @@ namespace Fines.Tests
             // Arrange
             var finesEntities = new List<FinesEntity>
             {
-                new FinesEntity { Id = 1, FineNo = "FN-001", FineDate = DateTime.Now, FineType = FineType.Speeding, VehicleId = 1, Vehicle = new VehicleEntity { Id = 1, RegistrationNumber = "REG1" }, VehicleDriverName = "Driver1" },
-                new FinesEntity { Id = 2, FineNo = "FN-002", FineDate = DateTime.Now, FineType = FineType.Parking, VehicleId = 2, Vehicle = new VehicleEntity { Id = 2, RegistrationNumber = "REG2" }, VehicleDriverName = "Driver2" },
-                new FinesEntity { Id = 3, FineNo = "FN-003", FineDate = DateTime.Now, FineType = FineType.RedLightViolation, VehicleId = 3, Vehicle = new VehicleEntity { Id = 3, RegistrationNumber = "REG3" }, VehicleDriverName = "Driver3" },
-                new FinesEntity { Id = 4, FineNo = "FN-004", FineDate = DateTime.Now, FineType = FineType.NoInsurance, VehicleId = 4, Vehicle = new VehicleEntity { Id = 4, RegistrationNumber = "REG4" }, VehicleDriverName = "Driver4" },
-                new FinesEntity { Id = 5, FineNo = "FN-005", FineDate = DateTime.Now, FineType = FineType.SeatBeltViolation, VehicleId = 5, Vehicle = new VehicleEntity { Id = 5, RegistrationNumber = "REG5" }, VehicleDriverName = "Driver5" }
+                new FinesEntity { Id = 1, FineNo = "FN-001", FineDate = DateTime.Now, FineType = FineType.Speeding, VehicleId = 1, Vehicle = new VehicleEntity { Id = 1, RegistrationNumber = "REG1" }, VehicleDriverName = "Driver1", CustomerId = 100, Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" }},
+                new FinesEntity { Id = 2, FineNo = "FN-002", FineDate = DateTime.Now, FineType = FineType.Parking, VehicleId = 2, Vehicle = new VehicleEntity { Id = 2, RegistrationNumber = "REG2" }, VehicleDriverName = "Driver2", CustomerId = 100, Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" } },
+                new FinesEntity { Id = 3, FineNo = "FN-003", FineDate = DateTime.Now, FineType = FineType.RedLightViolation, VehicleId = 3, Vehicle = new VehicleEntity { Id = 3, RegistrationNumber = "REG3" }, VehicleDriverName = "Driver3", CustomerId = 100, Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" } },
+                new FinesEntity { Id = 4, FineNo = "FN-004", FineDate = DateTime.Now, FineType = FineType.NoInsurance, VehicleId = 4, Vehicle = new VehicleEntity { Id = 4, RegistrationNumber = "REG4" }, VehicleDriverName = "Driver4", CustomerId = 100, Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" } },
+                new FinesEntity { Id = 5, FineNo = "FN-005", FineDate = DateTime.Now, FineType = FineType.SeatBeltViolation, VehicleId = 5, Vehicle = new VehicleEntity { Id = 5, RegistrationNumber = "REG5" }, VehicleDriverName = "Driver5", CustomerId = 100, Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" } }
             };
             _mockRepository.Setup(repo => repo.GetAllFinesAsync())
                 .ReturnsAsync(finesEntities);
@@ -156,7 +159,9 @@ namespace Fines.Tests
                     FineType = FineType.Speeding,
                     VehicleId = 1,
                     Vehicle = new VehicleEntity { Id = 1, RegistrationNumber = "ABC123", Make = "Ford", Model = "Focus", Color = "Blue", Year = 2020 },
-                    VehicleDriverName = "John Doe"
+                    VehicleDriverName = "John Doe",
+                    CustomerId = 100,
+                    Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" }
                 },
                 new FinesEntity
                 {
@@ -166,7 +171,9 @@ namespace Fines.Tests
                     FineType = FineType.Parking,
                     VehicleId = 2,
                     Vehicle = new VehicleEntity { Id = 2, RegistrationNumber = "XYZ789", Make = "Volkswagen", Model = "Golf", Color = "Silver", Year = 2021 },
-                    VehicleDriverName = "Jane Smith"
+                    VehicleDriverName = "Jane Smith",
+                    CustomerId = 100,
+                    Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" }
                 },
                 new FinesEntity
                 {
@@ -176,7 +183,9 @@ namespace Fines.Tests
                     FineType = FineType.RedLightViolation,
                     VehicleId = 3,
                     Vehicle = new VehicleEntity { Id = 3, RegistrationNumber = "DEF456", Make = "BMW", Model = "3 Series", Color = "Black", Year = 2022 },
-                    VehicleDriverName = "Bob Johnson"
+                    VehicleDriverName = "Bob Johnson",
+                    CustomerId = 100,
+                    Customer =  new CustomerEntity { Id = 100, CompanyName = "john was here" }
                 }
             };
         }
