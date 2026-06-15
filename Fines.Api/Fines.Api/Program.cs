@@ -1,4 +1,5 @@
 using Fines.Data;
+using Fines.Data.Seed;
 using Fines.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,17 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<FinesDbContext>();
     context.Database.EnsureCreated();
+
+
+    // Seed data - moved from builder as breaking use of in memory database for alternative unit test approach
+    if (!context.Fines.Any()) 
+    {
+        context.AddRange(VehicleSeedData.GetSeedData());
+        context.AddRange(CustomerSeedData.GetSeedData());
+        context.AddRange(FinesSeedData.GetSeedData());
+        context.SaveChanges();
+    } 
+
 }
 
 // Configure the HTTP request pipeline.
