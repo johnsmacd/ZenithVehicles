@@ -31,9 +31,9 @@ public class FinesDbContext : DbContext
             .HasForeignKey(f => f.CustomerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Seed data
-        modelBuilder.Entity<VehicleEntity>().HasData(VehicleSeedData.GetSeedData());
-        modelBuilder.Entity<CustomerEntity>().HasData(CustomerSeedData.GetSeedData());
-        modelBuilder.Entity<FinesEntity>().HasData(FinesSeedData.GetSeedData());
+        //// Seed data - moved to program.cs to allow for alternatibe unti test approach using in momeory database
+        //modelBuilder.Entity<VehicleEntity>().HasData(VehicleSeedData.GetSeedData());
+        //modelBuilder.Entity<CustomerEntity>().HasData(CustomerSeedData.GetSeedData());
+        //modelBuilder.Entity<FinesEntity>().HasData(FinesSeedData.GetSeedData());
     }
 }
