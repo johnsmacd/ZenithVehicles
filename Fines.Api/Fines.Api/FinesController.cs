@@ -9,7 +9,6 @@ namespace Fines.Api;
 public class FinesController : ControllerBase
 {
     private readonly IFinesService _finesService;
-    private string finetype;
 
     public FinesController(IFinesService finesService)
     {
@@ -46,9 +45,4 @@ public class FinesController : ControllerBase
         return Ok(fines);
     }
 
-    public class QueryParameters
-    {
-        [FromQuery(Name = "finetype")]
-        public string? FineType { get; set; }
-    }
 }
