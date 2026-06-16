@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Fine } from "../types/fine";
+import { FineType } from "../enum/fineType";
 
 const API_URL = "http://localhost:5200/api";
 
-export function useFines() {
+export function useFines(filter: string) {
+  
+  
   const [fines, setFines] = useState<Fine[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +17,17 @@ export function useFines() {
       setError(null);
 
       try {
-        const response = await fetch(`${API_URL}/fines`);
+
+        let queryString = '';
+
+        if (filter !== '') {
+          const a = Object.keys(FineType).find((x) => {
+            const key = x as keyof typeof FineType;
+            return FineType[key] === parseInt(filter, 10);
+          });
+          queryString = `?finetype=${a}`;
+        }
+        const response = await fetch(`${API_URL}/fines${queryString}`);
 
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -36,7 +49,7 @@ export function useFines() {
     };
 
     fetchFines();
-  }, []);
+  }, [filter]);
 
   return { fines, loading, error };
 }
