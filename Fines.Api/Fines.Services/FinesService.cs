@@ -1,4 +1,5 @@
 ﻿using Fines.Core.Dtos;
+using Fines.Core.Enums;
 using Fines.Data.Models;
 
 namespace Fines.Services;
@@ -12,9 +13,16 @@ public class FinesService : IFinesService
         _finesRepository = finesRepository;
     }
 
-    public async Task<IEnumerable<FinesResponse>> GetFinesAsync()
+    public async Task<IEnumerable<FinesResponse>> GetFinesAsync(FineType? typeFilter = null)
     {
         var fines = await _finesRepository.GetAllFinesAsync();
+
+        //Do filter C# side as it is more readily scaleable
+        if (typeFilter != null)
+        {
+            fines = fines.Where(f => f.FineType == typeFilter.Value);   
+        }
+
         return fines.Select(MapToResponse);
     }
 
