@@ -13,10 +13,12 @@ namespace Fines.Tests
     {
 
         [Theory]
-        [InlineData("FineType=Speeding", FineType.Speeding)]
+        [InlineData("finetype=Speeding", FineType.Speeding)]
+        [InlineData("finetype=Unknown", FineType.Unknown)]
         [InlineData("", null)]
         [InlineData("FType=Speeding", null)]
         [InlineData("FineType=Seeding", null)]
+        [InlineData("finetype=johnwashere", null)]
         public async Task FinesController_CorrectFineFilter_passedToService(string queryStringParameters, FineType? expected)
         {
 
@@ -42,23 +44,45 @@ namespace Fines.Tests
                 }
             };
 
-            ////Handle null values
-            //int expectedInteger = -2;
-            //if (expected == null)
-            //    expectedInteger = -1;
-            //else
-            //    expectedInteger = (int)expected.Value;
 
             //Act
             var result = await finesController.GetFines();
 
             //Assert
             Assert.Equal(expected, passedFilter);
-
-
-
         }
 
+        [Theory]
+        [InlineData("finetype=Speeding&finetype=Unknown")]
+        public async Task FinesController_BadRequest_mulitpleFineTypesInQString(string queryStringParameters)
+        {
+
+            //Arrange
+            var finesServiceMock = new Mock<IFinesService>();
+
+            var httpContext = new DefaultHttpContext();
+            if (!string.IsNullOrWhiteSpace(queryStringParameters))
+            {
+                httpContext.Request.QueryString = new QueryString("?" + queryStringParameters);
+            }
+
+            var finesController = new FinesController(finesServiceMock.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+
+            //Act
+            var result = await finesController.GetFines();
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Only one valid finetype filter is allowed in the query string.", ((BadRequestObjectResult)result.Result).Value);
+
+        }
     }
 }
 
