@@ -49,7 +49,7 @@ The API will be available at:
 
 Retrieves a list of all fines in the system.
 
-**Endpoint:** `GET /api/fines[&finetype=Unknown|Speeding|Parking|RedLightViolation|NoInsurance|SeatBeltViiolation]`
+**Endpoint:** `GET /api/fines[&finetype=Unknown|Speeding|Parking|RedLightViolation|NoInsurance|SeatBeltViolation]`
 
 **Response:** `200 OK`
 
