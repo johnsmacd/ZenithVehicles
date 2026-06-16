@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fines.Api\Fines.Api.csproj" />
     <ProjectReference Include="..\Fines.Core\Fines.Core.csproj" />
     <ProjectReference Include="..\Fines.Data\Fines.Data.csproj" />
     <ProjectReference Include="..\Fines.Services\Fines.Services.csproj" />
