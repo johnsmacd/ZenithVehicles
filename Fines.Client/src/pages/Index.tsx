@@ -22,9 +22,10 @@ import { useState } from "react";
 
 export default function Index() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { fines, loading, error } = useFines();
 
   const [selectedFineType, setSelectedFineType] = useState("");
+
+  const { fines, loading, error } = useFines(selectedFineType);
 
   const fineTypes = [
     { value: "", label: "Any" },
@@ -63,7 +64,7 @@ export default function Index() {
               flex="0 1 20rem"
               data={fineTypes}
               value={selectedFineType}
-              onChange={(event) =>
+              onChange={(event) => 
                 setSelectedFineType(event.currentTarget.value)
               }
               label="Fine Type"
