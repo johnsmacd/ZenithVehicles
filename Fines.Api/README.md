@@ -61,7 +61,8 @@ Retrieves a list of all fines in the system.
     "fineDate": "2024-12-01T00:00:00",
     "fineType": "Parking",
     "vehicleRegNo": "ABC123",
-    "vehicleDriverName": "John Doe"
+    "vehicleDriverName": "John Doe",
+	"customerName": "John's Cars Limited"
   }
 ]
 ```
