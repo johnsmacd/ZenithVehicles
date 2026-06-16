@@ -29,11 +29,7 @@ namespace Fines.Tests
                 context.Vehicles.Add(new VehicleEntity { Id = 1, RegistrationNumber = "REG1" });
                 context.Fines.Add(new FinesEntity  { Id = 1, FineNo = "FN-001", FineDate = DateTime.Now, FineType = FineType.Speeding, VehicleId = 1, VehicleDriverName = "john was here", CustomerId = 42 });
                 context.SaveChanges();
-            }
 
-
-            using (var context = new FinesDbContext(options))
-            {
                 IFinesRepository finesRepository = new FinesRepository(context);
 
                 var service = new FinesService(finesRepository); 
@@ -47,6 +43,7 @@ namespace Fines.Tests
 
                 //Clean up InMemory database
                 context.Database.EnsureDeleted();
+
             }
         }
     }

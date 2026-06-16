@@ -18,7 +18,7 @@ public class FinesController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<FinesResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<FinesResponse>>> GetFines()
     {
-        var fines = await _finesService.GetFinesAsync();
+        var fines = await _finesService.GetFinesAsync(null);
         return Ok(fines);
     }
 }
