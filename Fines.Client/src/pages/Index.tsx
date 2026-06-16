@@ -8,6 +8,7 @@ import {
   Paper,
   Table,
   Text,
+  TextInput,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
@@ -26,9 +27,11 @@ export default function Index() {
 
   const [selectedFineType, setSelectedFineType] = useState("");
 
+  const [setVehicleRegNo, setSelectedVehicleRegNo] = useState("");
+
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const { fines, loading, error } = useFines(selectedFineType, selectedDate);
+  const { fines, loading, error } = useFines(selectedFineType, selectedDate, setVehicleRegNo);
 
   const fineTypes = [
     { value: "", label: "Any" },
@@ -77,6 +80,14 @@ export default function Index() {
               value={selectedDate}
               onChange={setSelectedDate}
               label="Fine Date"
+              placeholder="Pick a date"
+            />
+            <TextInput
+              flex="0 1 20rem"
+              value={setVehicleRegNo}
+              onChange={(event) => setSelectedVehicleRegNo(event.currentTarget.value)}
+              label="Fine Vehicle Registration"
+              placeholder="Enter Reg. Number"
             />
           </Flex>
         </Paper>
