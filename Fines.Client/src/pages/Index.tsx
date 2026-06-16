@@ -41,6 +41,7 @@ export default function Index() {
       <Table.Td>{FineTypeLabels[fine.fineType]}</Table.Td>
       <Table.Td>{fine.vehicleRegNo}</Table.Td>
       <Table.Td>{fine.vehicleDriverName}</Table.Td>
+      <Table.Td>{fine.customerName}</Table.Td>
     </Table.Tr>
   ));
 
@@ -88,6 +89,7 @@ export default function Index() {
                 <Table.Th>Fine Type</Table.Th>
                 <Table.Th>Vehicle Registration</Table.Th>
                 <Table.Th>Vehicle Driver Name</Table.Th>
+                <Table.Th>Customer Name</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{rows}</Table.Tbody>
