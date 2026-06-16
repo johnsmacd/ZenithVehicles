@@ -9,6 +9,7 @@ import {
   Table,
   Text,
 } from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useFines } from "../hooks/useFines";
 import { FineTypeLabels } from "../enum/fineType";
@@ -25,7 +26,9 @@ export default function Index() {
 
   const [selectedFineType, setSelectedFineType] = useState("");
 
-  const { fines, loading, error } = useFines(selectedFineType);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const { fines, loading, error } = useFines(selectedFineType, selectedDate);
 
   const fineTypes = [
     { value: "", label: "Any" },
@@ -68,6 +71,12 @@ export default function Index() {
                 setSelectedFineType(event.currentTarget.value)
               }
               label="Fine Type"
+            />
+            <DatePickerInput
+              flex="0 1 20rem"
+              value={selectedDate}
+              onChange={setSelectedDate}
+              label="Fine Date"
             />
           </Flex>
         </Paper>

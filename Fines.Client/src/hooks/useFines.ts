@@ -4,7 +4,7 @@ import { FineType } from "../enum/fineType";
 
 const API_URL = "http://localhost:5200/api";
 
-export function useFines(filter: string) {
+export function useFines(fineTypeFilter: string, fineDateFilter: string | null) {
   
   
   const [fines, setFines] = useState<Fine[]>([]);
@@ -18,15 +18,22 @@ export function useFines(filter: string) {
 
       try {
 
-        let queryString = '';
+        let queryElements: string[] = [];
 
-        if (filter !== '') {
+        if (fineTypeFilter !== '') {
           const a = Object.keys(FineType).find((x) => {
             const key = x as keyof typeof FineType;
-            return FineType[key] === parseInt(filter, 10);
+            return FineType[key] === parseInt(fineTypeFilter, 10);
           });
-          queryString = `?finetype=${a}`;
+          queryElements.push(`finetype=${a}`);
         }
+
+        if (fineDateFilter !== null) {
+          queryElements.push(`finedate=${fineDateFilter}`);
+        }
+
+        let queryString = queryElements.length > 0 ? `?${queryElements.join('&')}` : '';
+
         const response = await fetch(`${API_URL}/fines${queryString}`);
 
         if (!response.ok) {
@@ -49,7 +56,7 @@ export function useFines(filter: string) {
     };
 
     fetchFines();
-  }, [filter]);
+  }, [fineTypeFilter, fineDateFilter]);
 
   return { fines, loading, error };
 }
