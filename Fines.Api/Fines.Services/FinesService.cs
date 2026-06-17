@@ -28,6 +28,11 @@ public class FinesService : IFinesService
             fines = fines.Where(f => DateOnly.FromDateTime(f.FineDate) == dateFilter.Value);
         }
 
+        if (!string.IsNullOrEmpty(regFilter))
+        {
+            fines = fines.Where(f => f.Vehicle.RegistrationNumber.StartsWith(regFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
         return fines.Select(MapToResponse);
     }
 

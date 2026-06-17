@@ -91,8 +91,8 @@ namespace Fines.Tests
         [InlineData("REG1", 3)]
         [InlineData("R", 3)]
         [InlineData("RE", 3)]
-        [InlineData(null, 3)]
-        [InlineData("", 3)]
+        [InlineData(null, 4)]
+        [InlineData("", 4)]
         [InlineData(" ", 0)]
         [InlineData("JOHN", 0)]
         public async Task GetFinesAsync_FilterByRegistration(string registration, int expectedCount)
