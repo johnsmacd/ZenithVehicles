@@ -1,8 +1,8 @@
 ﻿using Fines.Core.Dtos;
 using Fines.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Net.WebRequestMethods;
+using System.Net;
+
 
 namespace Fines.Api;
 
@@ -18,12 +18,19 @@ public class FinesController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<FinesResponse>), StatusCodes.Status200OK|StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IEnumerable<FinesResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<FinesResponse>>> GetFines()
     {
-        //Not advised online, though struggled in time to bind from query string to model using FromQuery and to also
-        //Unit test then validation of inputs, passed through to Service. Future improvement would be to bind querystring to model and validate model state.
-        //Likely required customer validators to perform some of below validation.
+        //Approach below is not recommended, better approach here would be to define model of filter parameters, and bind model parameters using [FromQuery] functionality
+
+        //Ended up with below as struggled to get binding with [FromQuery] working in conjuction with unit testing approach adopted on the controller, suspect binding occurs earlier in request pipeline than
+        //unit test approach allowed.  Have left as is as insufficient time to refactor and produce working solution
+
+        //The standard approach would be to used model and validation attributes on that mode to validate the model state - raising appropriate response when model state wasn't valid
+        //this would have also meant API would have presented better through swagger
+
+        //With approach adopted wanted to ensure parameters were validated prior to passing through to service, likely would have needed to write customer validators to achieve some of below without resorting to regex.
 
         string? qStringFineTypeFilter = HttpContext.Request.Query["finetype"].ToString();
 
@@ -75,13 +82,13 @@ public class FinesController : ControllerBase
         //Pass raw registration filter to service layer - an area for future improvement wouls be some validation of entry number/letters only
         //Best place for validation perhaps on client side - though with limited experience with React in sufficient time to apply now & provide appropriate
         //Client side message to user.
-        //Also need to consider the URL encoding of freetext on client into API query string, encoding on client and decoding here.
         string? qStringRegFilter = HttpContext.Request.Query["vehicleregno"].ToString();
 
         string? fineRegFilter = null;
         if (!string.IsNullOrEmpty(qStringRegFilter))
         {
-            fineRegFilter = qStringRegFilter;
+            //UrlDecode perhaps not nececesary here looks like framework takes care of it
+            fineRegFilter = WebUtility.UrlDecode(qStringRegFilter);
         }
 
         var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, dateFilter: fineDateFilter, registrationFilter: fineRegFilter);

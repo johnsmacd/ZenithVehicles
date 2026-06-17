@@ -36,7 +36,7 @@ export function useFines(fineTypeFilter: string,
         }
 
         if (fineVehicleRegNoFilter !== '') {
-          queryElements.push(`vehicleregno=${fineVehicleRegNoFilter}`);
+          queryElements.push(`vehicleregno=${encodeURIComponent(fineVehicleRegNoFilter)}`);
         }
 
         let queryString = queryElements.length > 0 ? `?${queryElements.join('&')}` : '';
