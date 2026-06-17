@@ -23,6 +23,7 @@ public class FinesController : ControllerBase
         string? qStringFineTypeFilter = HttpContext.Request.Query["finetype"].ToString();
 
         FineType? fineTypeFilter = null;
+
         if(!string.IsNullOrEmpty(qStringFineTypeFilter))
         {
             //Only one valid filter is allowed in query string otherwies return BadRequest
@@ -41,7 +42,23 @@ public class FinesController : ControllerBase
 
         }
 
-        var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, null);
+
+
+        string? qStringDateFilter = HttpContext.Request.Query["finedate"].ToString();
+
+        DateOnly? fineDateFilter = null;
+
+        if (!string.IsNullOrEmpty(qStringDateFilter))
+        {
+            string[] dateFormat = { "yyyy-MM-dd" };
+            if (!string.IsNullOrEmpty(qStringDateFilter))
+            {
+                    fineDateFilter = DateOnly.ParseExact(qStringDateFilter, dateFormat);
+            }
+        }
+
+        var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, dateFilter: fineDateFilter);
+        
         return Ok(fines);
     }
 
