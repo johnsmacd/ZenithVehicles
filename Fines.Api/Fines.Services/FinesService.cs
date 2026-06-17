@@ -13,7 +13,7 @@ public class FinesService : IFinesService
         _finesRepository = finesRepository;
     }
 
-    public async Task<IEnumerable<FinesResponse>> GetFinesAsync(FineType? typeFilter = null)
+    public async Task<IEnumerable<FinesResponse>> GetFinesAsync(FineType? typeFilter = null, DateOnly? dateFilter = null)
     {
         var fines = await _finesRepository.GetAllFinesAsync();
 
@@ -21,6 +21,11 @@ public class FinesService : IFinesService
         if (typeFilter != null)
         {
             fines = fines.Where(f => f.FineType == typeFilter.Value);   
+        }
+
+        if (dateFilter != null)
+        {
+            fines = fines.Where(f => DateOnly.FromDateTime(f.FineDate) == dateFilter.Value);
         }
 
         return fines.Select(MapToResponse);
