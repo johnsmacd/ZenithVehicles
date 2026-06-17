@@ -23,6 +23,11 @@ public class FinesService : IFinesService
             fines = fines.Where(f => f.FineType == typeFilter.Value);   
         }
 
+        if (dateFilter != null)
+        {
+            fines = fines.Where(f => DateOnly.FromDateTime(f.FineDate) == dateFilter.Value);
+        }
+
         return fines.Select(MapToResponse);
     }
 
