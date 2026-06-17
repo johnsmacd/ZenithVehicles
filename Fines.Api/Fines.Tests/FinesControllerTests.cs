@@ -27,7 +27,7 @@ namespace Fines.Tests
 
 
             FineType? passedFilter = null;
-            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>()))
+            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>()))
                     .Callback<FineType?>((val) => passedFilter = val);
 
             var httpContext = new DefaultHttpContext();

@@ -41,7 +41,7 @@ public class FinesController : ControllerBase
 
         }
 
-        var fines = await _finesService.GetFinesAsync(fineTypeFilter);
+        var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, null);
         return Ok(fines);
     }
 
