@@ -70,7 +70,7 @@ public class FinesController : ControllerBase
             }
         }
 
-        var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, dateFilter: fineDateFilter);
+        var fines = await _finesService.GetFinesAsync(typeFilter: fineTypeFilter, dateFilter: fineDateFilter, registrationFilter: null);
         
         return Ok(fines);
     }

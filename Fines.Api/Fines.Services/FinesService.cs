@@ -13,7 +13,7 @@ public class FinesService : IFinesService
         _finesRepository = finesRepository;
     }
 
-    public async Task<IEnumerable<FinesResponse>> GetFinesAsync(FineType? typeFilter = null, DateOnly? dateFilter = null)
+    public async Task<IEnumerable<FinesResponse>> GetFinesAsync(FineType? typeFilter = null, DateOnly? dateFilter = null, string? regFilter = null)
     {
         var fines = await _finesRepository.GetAllFinesAsync();
 

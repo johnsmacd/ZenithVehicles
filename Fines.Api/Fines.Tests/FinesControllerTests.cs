@@ -29,8 +29,8 @@ namespace Fines.Tests
 
 
             FineType? passedFilter = null;
-            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>()))
-                    .Callback<FineType?, DateOnly?>((val, val2) => passedFilter = val);
+            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>(), It.IsAny<string?>()))
+                    .Callback<FineType?, DateOnly?, string?>((val, val2, val3) => passedFilter = val);
 
             var httpContext = new DefaultHttpContext();
             if (!string.IsNullOrWhiteSpace(queryStringParameters))
@@ -105,8 +105,8 @@ namespace Fines.Tests
             var finesServiceMock = new Mock<IFinesService>();
 
             DateOnly? passedFilter = null;
-            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>()))
-                    .Callback<FineType?, DateOnly?>((val, val2) => passedFilter = val2);
+            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>(), It.IsAny<string?>()))
+                    .Callback<FineType?, DateOnly?, string?>((val, val2, val3) => passedFilter = val2);
 
             var httpContext = new DefaultHttpContext();
             if (!string.IsNullOrWhiteSpace(queryStringParameters))
