@@ -1,6 +1,8 @@
 ﻿using Fines.Core.Dtos;
 using Fines.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Net.WebRequestMethods;
 
 namespace Fines.Api;
 
@@ -53,7 +55,18 @@ public class FinesController : ControllerBase
             string[] dateFormat = { "yyyy-MM-dd" };
             if (!string.IsNullOrEmpty(qStringDateFilter))
             {
-                    fineDateFilter = DateOnly.ParseExact(qStringDateFilter, dateFormat);
+                if (qStringDateFilter.Split(',').Length > 1)
+                {
+                    return BadRequest("Only one valid finedate filter is allowed in the query string.");
+                }
+
+                if (DateOnly.TryParseExact(qStringDateFilter, dateFormat, out var dateValue))
+                {
+                    fineDateFilter = dateValue;
+                } 
+                else {
+                    return BadRequest("Invalid value specified for finedate must a valid date in form 'yyyy-MM-dd'");
+                }
             }
         }
 
