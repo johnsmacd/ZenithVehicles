@@ -166,6 +166,45 @@ namespace Fines.Tests
         }
 
 
+        [Theory]
+        [InlineData("vehicleregno=RS", "RS")]
+        [InlineData("", null)]
+        [InlineData(null, null)]
+        public async Task FinesController_CorrectRegFilter_passedToService(string queryStringParameters, string? expected)
+        {
+
+            //Arrange
+            var finesServiceMock = new Mock<IFinesService>();
+
+            string? passedFilter = null;
+            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>(), It.IsAny<string?>()))
+                    .Callback<FineType?, DateOnly?, string?>((val, val2, val3) => passedFilter = val3);
+
+            var httpContext = new DefaultHttpContext();
+            if (!string.IsNullOrWhiteSpace(queryStringParameters))
+            {
+                httpContext.Request.QueryString = new QueryString("?" + queryStringParameters);
+            }
+
+            var finesController = new FinesController(finesServiceMock.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            //Act
+            var result = await finesController.GetFines();
+
+            //Assert
+            Assert.Equal(expected, passedFilter);
+        }
+
+
+
+
+
     }
 }
 
