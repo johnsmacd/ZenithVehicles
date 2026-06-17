@@ -87,6 +87,52 @@ namespace Fines.Tests
         }
 
 
+        [Theory]
+        [InlineData("REG1", 3)]
+        [InlineData("R", 3)]
+        [InlineData("RE", 3)]
+        [InlineData(null, 4)]
+        [InlineData("", 4)]
+        [InlineData(" ", 0)]
+        [InlineData("JOHN", 0)]
+        public async Task GetFinesAsync_FilterByRegistration(string registration, int expectedCount)
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<FinesDbContext>()
+                .UseInMemoryDatabase(databaseName: "finesRegFilterDatabase")
+                .Options;
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new FinesDbContext(options))
+            {
+                context.Customers.Add(new CustomerEntity { Id = 42, CompanyName = "naugthy john" });
+                context.Vehicles.Add(new VehicleEntity { Id = 1, RegistrationNumber = "REG1" });
+                context.Vehicles.Add(new VehicleEntity { Id = 2, RegistrationNumber = "XMAS" });
+                context.Fines.Add(new FinesEntity { Id = 1, FineNo = "FN-001", FineDate = new DateTime(2020, 12, 17, 15, 30, 05), FineType = FineType.Speeding, VehicleId = 1, VehicleDriverName = "john was here", CustomerId = 42 });
+                context.Fines.Add(new FinesEntity { Id = 2, FineNo = "FN-002", FineDate = new DateTime(2020, 12, 17, 00, 00, 00), FineType = FineType.Speeding, VehicleId = 1, VehicleDriverName = "john was here", CustomerId = 42 });
+                context.Fines.Add(new FinesEntity { Id = 3, FineNo = "FN-003", FineDate = new DateTime(2020, 12, 17, 23, 59, 59), FineType = FineType.Speeding, VehicleId = 1, VehicleDriverName = "john was here", CustomerId = 42 });
+                context.Fines.Add(new FinesEntity { Id = 4, FineNo = "FN-004", FineDate = new DateTime(2020, 12, 17, 23, 59, 59), FineType = FineType.Speeding, VehicleId = 2, VehicleDriverName = "john was here", CustomerId = 42 });
+                context.SaveChanges();
+
+                IFinesRepository finesRepository = new FinesRepository(context);
+
+                var service = new FinesService(finesRepository);
+
+                //Act   
+                var fineResponses = await service.GetFinesAsync(regFilter: registration);
+
+                //Clean up InMemory database
+                context.Database.EnsureDeleted();
+
+                //Assert
+                Assert.Equal(expectedCount, fineResponses.Count());
+
+
+
+            }
+        }
+
+
 
     }
 }
