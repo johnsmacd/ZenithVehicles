@@ -4,7 +4,10 @@ import { FineType } from "../enum/fineType";
 
 const API_URL = "http://localhost:5200/api";
 
-export function useFines(fineTypeFilter: string, fineDateFilter: string | null) {
+export function useFines(fineTypeFilter: string, 
+  fineDateFilter: string | null,
+  fineVehicleRegNoFilter: string) 
+ {
   
   
   const [fines, setFines] = useState<Fine[]>([]);
@@ -32,6 +35,10 @@ export function useFines(fineTypeFilter: string, fineDateFilter: string | null) 
           queryElements.push(`finedate=${fineDateFilter}`);
         }
 
+        if (fineVehicleRegNoFilter !== '') {
+          queryElements.push(`vehicleregno=${fineVehicleRegNoFilter}`);
+        }
+
         let queryString = queryElements.length > 0 ? `?${queryElements.join('&')}` : '';
 
         const response = await fetch(`${API_URL}/fines${queryString}`);
@@ -56,7 +63,7 @@ export function useFines(fineTypeFilter: string, fineDateFilter: string | null) 
     };
 
     fetchFines();
-  }, [fineTypeFilter, fineDateFilter]);
+  }, [fineTypeFilter, fineDateFilter, fineVehicleRegNoFilter]);
 
   return { fines, loading, error };
 }
