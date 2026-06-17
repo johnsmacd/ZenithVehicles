@@ -24,15 +24,13 @@ public class FinesController : ControllerBase
     {
         //Approach below is not recommended, better approach here would be to define model of filter parameters, and bind model parameters using [FromQuery] functionality
 
-        //Ended up with below as struggled to get binding with [FromQuery] working in conjuction with unit testing approach adopted on the controller.  Have left as is as insufficient time to refactor and 
-        //produce working solution
+        //Ended up with below as struggled to get binding with [FromQuery] working in conjuction with unit testing approach adopted on the controller, suspect binding occurs earlier in request pipeline than
+        //unit test approach allowed.  Have left as is as insufficient time to refactor and produce working solution
 
         //The standard approach would be to used model and validation attributes on that mode to validate the model state - raising appropriate response when model state wasn't valid
         //this would have also meant API would have presented better through swagger
 
-        //With approach adopted wanted to ensure parameters were validated prior to passing through to service
-        
-
+        //With approach adopted wanted to ensure parameters were validated prior to passing through to service, likely would have needed to write customer validators to achieve some of below without resorting to regex.
 
         string? qStringFineTypeFilter = HttpContext.Request.Query["finetype"].ToString();
 
