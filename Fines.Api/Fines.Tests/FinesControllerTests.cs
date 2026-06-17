@@ -1,10 +1,12 @@
-﻿using Fines.Core.Enums;
-using Moq;
-using Xunit;
-using Fines.Api;
+﻿using Fines.Api;
+using Fines.Core.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Diagnostics.Eventing.Reader;
+using Xunit;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Net.WebRequestMethods;
 
 
 namespace Fines.Tests
@@ -125,6 +127,42 @@ namespace Fines.Tests
 
             //Assert
             Assert.Equal(expectedDate, passedFilter);
+        }
+
+
+        [Theory]
+        [InlineData("finedate=2020-02-01&finedate=2020-02-02", "Only one valid finedate filter is allowed in the query string.")]
+        [InlineData("finedate=01/02/2020", "Invalid value specified for finedate must a valid date in form 'yyyy-MM-dd'")]
+        [InlineData("finedate=2020-1-1", "Invalid value specified for finedate must a valid date in form 'yyyy-MM-dd'")]
+        [InlineData("finedate=2020-30-10", "Invalid value specified for finedate must a valid date in form 'yyyy-MM-dd'")]
+        public async Task FinesController_BadRequest_dateFormatIssue(string queryStringParameters, string expectedErrorMsg)
+        {
+
+            //Arrange
+            var finesServiceMock = new Mock<IFinesService>();
+
+            var httpContext = new DefaultHttpContext();
+            if (!string.IsNullOrWhiteSpace(queryStringParameters))
+            {
+                httpContext.Request.QueryString = new QueryString("?" + queryStringParameters);
+            }
+
+            var finesController = new FinesController(finesServiceMock.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+
+            //Act
+            var result = await finesController.GetFines();
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal(expectedErrorMsg, ((BadRequestObjectResult)result.Result).Value);
+
         }
 
 
