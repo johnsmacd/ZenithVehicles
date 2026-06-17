@@ -83,6 +83,51 @@ namespace Fines.Tests
             Assert.Equal("Only one valid finetype filter is allowed in the query string.", ((BadRequestObjectResult)result.Result).Value);
 
         }
+
+
+        [Theory]
+        [InlineData("finedate=2021-01-02", "2021-01-02")]
+        [InlineData("", null)]
+        public async Task FinesController_CorrectDateFilter_passedToService(string queryStringParameters, string expectedDateStr)
+        {
+
+            //Arrange
+            DateOnly? expectedDate = null;
+
+            if (expectedDateStr != null)
+            {
+                string[] dateFormat = { "yyyy-MM-dd" };
+                expectedDate = DateOnly.ParseExact(expectedDateStr, dateFormat);
+            }
+               
+            var finesServiceMock = new Mock<IFinesService>();
+
+            DateOnly? passedFilter = null;
+            finesServiceMock.Setup(c => c.GetFinesAsync(It.IsAny<FineType?>(), It.IsAny<DateOnly?>()))
+                    .Callback<FineType?, DateOnly?>((val, val2) => passedFilter = val2);
+
+            var httpContext = new DefaultHttpContext();
+            if (!string.IsNullOrWhiteSpace(queryStringParameters))
+            {
+                httpContext.Request.QueryString = new QueryString("?" + queryStringParameters);
+            }
+
+            var finesController = new FinesController(finesServiceMock.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            //Act
+            var result = await finesController.GetFines();
+
+            //Assert
+            Assert.Equal(expectedDate, passedFilter);
+        }
+
+
     }
 }
 
