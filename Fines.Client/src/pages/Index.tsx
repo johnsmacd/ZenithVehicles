@@ -76,6 +76,7 @@ export default function Index() {
               label="Fine Type"
             />
             <DatePickerInput
+              allowDeselect
               flex="0 1 20rem"
               value={selectedDate}
               onChange={setSelectedDate}
